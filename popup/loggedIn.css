@@ -1,3 +1,6 @@
 .server-name.selected {
   font-size: larger;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }

@@ -18,7 +18,8 @@
 
   "background": {
     "scripts": [
-      "background/proxy-handler.js"
+      "background/proxy-handler.js",
+      "background/icon-handler.js"
     ]
   },
 

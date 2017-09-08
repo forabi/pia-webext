@@ -26,17 +26,11 @@ browser.proxy.onProxyError.addListener(error => {
 
 browser.storage.onChanged.addListener(async (newConfig) => {
   console.log('Configuration changed', newConfig);
-  let dirty = false;
   for (const key of Object.keys(newConfig)) {
     console.log(key, newConfig[key]);
-    if (newConfig[key].newValue !== newConfig[key].oldValue) {
-      dirty = true;
-      config[key] = newConfig[key].newValue;
-    }
+    config[key] = newConfig[key].newValue;
   }
-  if (dirty) {
-    browser.runtime.sendMessage(config, { toProxyScript: true });
-  }
+  browser.runtime.sendMessage(config, { toProxyScript: true });
 });
 
 // Initialize the proxy
@@ -50,14 +44,16 @@ async function handleInit() {
 
   try {
     browser.webRequest.onAuthRequired.addListener(
-      (details) => {
-        if (!details.isProxy || !config.username || !config.password) {
+      async (details) => {
+        console.log('Handling request', details.url, details);
+        const { username, password } = await browser.storage.local.get(['username', 'password']);
+        if (!details.isProxy || !username || !password) {
           return { };
         }
         return {
           authCredentials: {
-            username: config.username,
-            password: config.password,
+            username: username,
+            password: password,
           }
         };
       },

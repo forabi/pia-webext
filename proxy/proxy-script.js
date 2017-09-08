@@ -1,6 +1,3 @@
-// Tell the background script that we are ready
-
-
 let config;
 
 function setConfig(update) {
@@ -17,6 +14,7 @@ function setConfig(update) {
   }
 }
 
+// Tell the background script that we are ready
 browser.runtime.sendMessage("init");
 
 browser.runtime.onMessage.addListener((message) => {
@@ -33,7 +31,7 @@ function FindProxyForURL(url, host) {
   if (config === undefined) {
     return 'DIRECT';
   }
-  if (config.bypassList.indexOf(host) !== -1) {
+  if (url === config.proxy.dns || url === 'https://www.privateinternetaccess.com/api/client/services/https' || config.bypassList.indexOf(host) !== -1) {
     return 'DIRECT';
   }
   return `HTTPS ${config.proxy.dns}:${config.proxy.port}`;

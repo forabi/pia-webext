@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./popup.css"/>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <form action="GET" id="form-login">
+          <div class="logo-wrapper">
+            <img class="logo" src="/images/PIA-logo2x.png" alt="Private Internet Access" />
+          </div>
+          <div class="login-wrapper">
+            <label>
+              <span class="sr-only">Username:</span>
+              <input required name="username" placeholder="Username (p123456)" autofocus>
+            </label>
+            <label>
+              <span class="sr-only">Password:</span>
+              <input required name="password" placeholder="Password">
+            </label>
+            <button class="btn btn-primary" type="submit">
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="alert alert-warning alert-unofficial">
+        Note: This is an <em>unofficial</em> extension.
+        We make no guarantees that it will work as intended.
+        Your IP may leak, the extension may not work.
+        Use at your own risk.
+      </div>
+    </div>
+    <script src="./login.js"></script>
+  </body>
+</html>
