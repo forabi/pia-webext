@@ -1,8 +1,8 @@
 {
 
   "manifest_version": 2,
-  "name": "Proxy-blocker",
-  "description": "Uses the proxy API to block requests to specific hosts.",
+  "name": "PIA (Unofficial)",
+  "description": "Unofficial WebExtension for Private Internet Access",
   "version": "1.0",
 
   "icons": {
@@ -18,8 +18,7 @@
 
   "background": {
     "scripts": [
-      "background/proxy-handler.js",
-      "background/icon-handler.js"
+      "background/proxy-handler.js"
     ]
   },
 
@@ -38,7 +37,7 @@
     "browser_style": true,
     "default_title": "PIA",
     "default_icon": "images/icons/icon16red.png",
-    "default_popup": "popup/popup.html"
+    "default_popup": "ui/index.html"
   },
 
   "default_locale": "en"

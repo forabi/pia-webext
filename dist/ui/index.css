@@ -11,7 +11,8 @@ body {
   min-height: var(--preferred-height);
 }
 
-body, .container {
+body,
+.container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,9 +36,9 @@ body, .container {
 }
 
 .alert.alert-warning {
-  background: #FFD667;
-  border: 1px solid #835E00;
-  color: #835E00;
+  background: #ffd667;
+  border: 1px solid #835e00;
+  color: #835e00;
   font-size: small;
 }
 
@@ -75,12 +76,12 @@ body, .container {
   width: 100%;
 }
 
-input, button {
+input,
+button {
   width: 100%;
 }
 
 .btn {
-
 }
 
 .btn.btn-primary {

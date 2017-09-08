@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "strict": true,
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "es2015",
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": true,
     "lib": [
       "es2015",
       "scripthost",
