@@ -1,6 +1,6 @@
-import { h, Component, render } from 'preact';
 import { getIsLoggedIn, getServerId, initializeStore, initialState, State, store } from './store';
 import { Provider, connect } from 'preact-redux';
+import { Component, h, render } from 'preact';
 import { ConnectedLoggedInPage } from './pages/LoggedIn';
 import { ConnectedLoginPage } from './pages/Login';
 import { ConnectedServerSelectionPage } from './pages/ServerSelection';
@@ -25,17 +25,19 @@ const ConnectedApp = connect((state: State): Partial<Props> => ({
   serverId: getServerId(state),
 }))(App);
 
-browser.storage.local.get().then((savedState: State) => {
-  store.dispatch(initializeStore({
-    ...initialState,
-    ...savedState,
-    isLoggingIn: false,
-  }));
+browser.storage.local
+  .get(Object.keys(initialState))
+  .then((savedState: State) => {
+    store.dispatch(initializeStore({
+      ...initialState,
+      ...savedState,
+      isLoggingIn: false,
+    }));
 
-  render(
-    <Provider store={store}>
-      <ConnectedApp />
-    </Provider>,
-    document.getElementById('container') as Element,
-  );
-})
+    render(
+      <Provider store={store}>
+        <ConnectedApp />
+      </Provider>,
+      document.getElementById('container') as Element,
+    );
+  });

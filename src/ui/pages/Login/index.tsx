@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
-import { store, State, DispatchProps } from '../../store';
+import { store, DispatchProps } from '../../store';
 import linkState from 'linkstate';
 
 type Props = Pick<State, 'username' | 'password' | 'isLoggingIn'> & DispatchProps;

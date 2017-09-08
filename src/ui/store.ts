@@ -6,26 +6,6 @@ import {
 } from 'redux';
 import { createSelector } from 'reselect';
 
-export type Server = {
-  name: string;
-  dns: string;
-  mace: string;
-  iso: string;
-};
-
-export type State = {
-  isLoggedIn: boolean;
-  isLoggingIn: boolean;
-  lastLoginError: string | null;
-  isEnabled: boolean;
-  username: string | null;
-  password: string | null;
-  serverId: string | null;
-  serverList: {
-    [id: string]: Server;
-  };
-};
-
 type PayloadsByActionType = {
   INIT: State;
   PATCH_STATE: Partial<State>;
@@ -67,9 +47,12 @@ const reducer = (state: State, action: Action<ActionType>) => {
       ...action.payload,
     };
   } else if (isActionOfType(action, 'STORAGE_CHANGED')) {
-    const changes = {};
-    Object.keys(action.payload).forEach(key => {
-      changes[key] = action.payload[key].newValue;
+    const changes: Partial<State> = {};
+    Object.keys(action.payload).forEach((key: keyof State) => {
+      const changeData = action.payload[key];
+      if (changeData !== undefined) {
+        changes[key] = changeData.newValue;
+      }
     });
     if (Object.keys(changes).length > 0) {
       return {
@@ -90,6 +73,7 @@ export const initialState: State = {
   isEnabled: true,
   password: null,
   username: null,
+  bypassList: [],
   serverId: null,
   serverList: {},
 };
@@ -106,10 +90,10 @@ export const initializeStore = createActionCreator('INIT');
 
 const AUTH_URL = 'https://www.privateinternetaccess.com/api/client/auth';
 
-const loggerMiddleware: Middleware = () => (next) => action => {
+const loggerMiddleware: Middleware = () => next => action => {
   console.info('Action dispatched', action.type, action.payload);
   return next(action);
-}
+};
 
 const loginMiddleware: Middleware = ({ getState }) => next => async action => {
   if (!isActionOfType(action, 'LOGIN_REQUESTED')) {
@@ -117,11 +101,13 @@ const loginMiddleware: Middleware = ({ getState }) => next => async action => {
     return;
   }
   const { password, username } = getState();
-  next(patchState({
-    isLoggedIn: false,
-    isLoggingIn: true,
-    lastLoginError: null,
-  }));
+  next(
+    patchState({
+      isLoggedIn: false,
+      isLoggingIn: true,
+      lastLoginError: null,
+    }),
+  );
   try {
     const token = btoa(unescape(encodeURIComponent(username + ':' + password)));
     const authRequest = fetch(AUTH_URL, {
@@ -129,7 +115,9 @@ const loginMiddleware: Middleware = ({ getState }) => next => async action => {
         Authorization: `Basic ${token}`,
       }),
     });
-    const serverListRequest = fetch('https://www.privateinternetaccess.com/api/client/services/https');
+    const serverListRequest = fetch(
+      'https://www.privateinternetaccess.com/api/client/services/https',
+    );
     const authResponse = await authRequest;
     const status = authResponse.status;
     if (status === 200) {
@@ -167,10 +155,9 @@ const loginMiddleware: Middleware = ({ getState }) => next => async action => {
 
 const store = createStore<State>(
   reducer,
-  applyMiddleware(...[
-    loginMiddleware,
-    loggerMiddleware,
-  ] as ReduxMiddleware[]),
+  applyMiddleware(
+    ...([loginMiddleware, loggerMiddleware] as ReduxMiddleware[]),
+  ),
 );
 
 export const getIsLoggedIn = (state: State) => state.isLoggedIn;
@@ -199,31 +186,6 @@ export const isConnected = createSelector(
 store.subscribe(function updateStorage() {
   const state = store.getState();
   browser.storage.local.set(state);
-});
-
-store.subscribe(function updateIcon() {
-  const state = store.getState();
-  const server = getSelectedServer(state);
-  const { isLoggedIn, isEnabled } = state;
-  if (isConnected(state)) {
-    browser.browserAction.setTitle({ title: `Connected to ${server.name}` });
-    browser.browserAction.setBadgeText({ text: server.iso });
-    browser.browserAction.setIcon({
-      path: {
-        16: '/images/icons/icon16.png',
-        32: '/images/icons/icon32.png',
-      },
-    });
-  } else {
-    browser.browserAction.setTitle({ title: 'Not connected' });
-    browser.browserAction.setBadgeText({ text: '' });
-    browser.browserAction.setIcon({
-      path: {
-        16: '/images/icons/icon16red.png',
-        32: '/images/icons/icon32red.png',
-      },
-    });
-  }
 });
 
 export { store };

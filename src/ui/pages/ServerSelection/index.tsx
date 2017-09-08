@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import { connect } from 'preact-redux';
-import { store, State, DispatchProps } from '../../store';
+import { store, DispatchProps } from '../../store';
 
 type Props = Pick<State, 'serverId' | 'serverList'> & DispatchProps;
 
@@ -10,6 +10,7 @@ class ServerSelectionPage extends Component<Props, void> {
       type: 'PATCH_STATE',
       payload: {
         serverId: key,
+        isEnabled: true,
       },
     })
   }

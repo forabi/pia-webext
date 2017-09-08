@@ -1,11 +1,13 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
     "strict": true,
     "moduleResolution": "node",
-    "target": "es5",
-    "module": "es2015",
+    "target": "es2017",
+    "module": "none",
+    "watch": true,
     "allowSyntheticDefaultImports": true,
-    "noEmitOnError": true,
+    "outDir": "dist",
     "lib": [
       "es2015",
       "scripthost",
@@ -17,10 +19,19 @@
     "checkJs": true,
     "typeRoots": [
       "@types",
-      "node_modules/web-ext-types"
+      "typings"
     ]
   },
+  "files": [
+    "src/proxy-handler/index.ts",
+    "src/proxy-script/index.ts",
+    "src/icon-handler/index.ts"
+  ],
+  "include": [
+    "typings"
+  ],
   "exclude": [
+    "src/ui",
     "webpack.config.js",
     "dist"
   ]

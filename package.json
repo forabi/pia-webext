@@ -6,7 +6,9 @@
   "author": "Muhammad Fawwaz Orabi <mfawwaz93@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf dist/proxy-script dist/proxy-handler dist/ui/index.js",
     "webpack": "NODE_ENV=production webpack --watch",
+    "ts": "tsc ",
     "ext": "web-ext run -s ./dist --firefox=nightly",
     "pretty": "prettier './*.js' 'src/**/*.{ts,js,css}' --write --single-quote --trailing-comma all"
   },
@@ -15,7 +17,6 @@
     "ts-loader": "^2.3.6",
     "typescript": "^2.5.2",
     "web-ext": "^2.0.0",
-    "web-ext-types": "^0.3.1",
     "webpack": "^3.5.6"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@types/reselect": "^2.2.0",
     "lodash": "^4.17.4",
     "lodash-es": "^4.17.4",
+    "material-ui": "^1.0.0-beta.8",
     "preact": "^8.2.5",
     "preact-redux": "^2.0.2",
     "react-redux": "^5.0.6",
