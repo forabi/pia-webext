@@ -22,11 +22,6 @@
     ]
   },
 
-  "options_ui": {
-    "page": "options/options.html",
-    "browser_style": false
-  },
-
   "permissions": [
     "proxy",
     "storage",
@@ -36,5 +31,14 @@
     "http://*/*",
     "https://*/*",
     "<all_urls>"
-  ]
+  ],
+
+  "browser_action": {
+    "browser_style": true,
+    "default_title": "PIA",
+    "default_icon": "images/icons/icon16red.png",
+    "default_popup": "popup/popup.html"
+  },
+
+  "default_locale": "en"
 }

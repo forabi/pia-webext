@@ -1,5 +1,5 @@
 // Location of the proxy script, relative to manifest.json
-const proxyScriptURL = "proxy/proxy-script.pac";
+const proxyScriptURL = "proxy/proxy-script.js";
 
 // Default settings. If there is nothing in storage, use these values.
 const defaultSettings = {
@@ -13,7 +13,7 @@ const defaultSettings = {
 };
 
 // Register the proxy script
-browser.proxy.register(proxyScriptURL);
+// browser.proxy.register(proxyScriptURL);
 
 // Log any errors from the proxy script
 browser.proxy.onProxyError.addListener(error => {
@@ -24,7 +24,12 @@ browser.proxy.onProxyError.addListener(error => {
 async function handleInit() {
   let config = {
     ...defaultSettings,
-    ...(await browser.storage.local.get()),
+    ...(await browser.storage.local.get([
+        'username',
+        'password',
+        'bypassList',
+        'proxy',
+      ])),
   };
 
   await browser.storage.local.set(config);
@@ -68,11 +73,13 @@ function handleMessage(message, sender) {
   }
 
   if (message === "init") {
-    handleInit(message);
+    handleInit();
   } else {
     // after the init message the only other messages are status messages
     console.log(message);
   }
+
+  return true;
 }
 
 browser.runtime.onMessage.addListener(handleMessage);
