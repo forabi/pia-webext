@@ -1,30 +1,51 @@
 // const bypassListTextArea = (document.querySelector("#bypass-list"));
-const usernameInput = (document.querySelector("input[name='username']"));
-const passwordInput = (document.querySelector("input[name='password']"));
+const usernameInput = /** @type {HTMLInputElement} */ (document.querySelector("input[name='username']"));
+const passwordInput = /** @type {HTMLInputElement} */ (document.querySelector("input[name='password']"));
 const submitButton = /** @type {HTMLInputElement} */ (document.querySelector("button[type='submit']"));
+
+const markAsValid = (e) => {
+  e.target.setCustomValidity('');
+};
+
+usernameInput.addEventListener('input', markAsValid);
+passwordInput.addEventListener('input', markAsValid);
 
 const form = /** @type {HTMLFormElement} */(document.querySelector('#form-login'));
 const AUTH_URL = 'https://www.privateinternetaccess.com/api/client/auth';
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
-  submitButton.disabled = true;
-  submitButton.classList.add('loading');
   const formData = new FormData(form);
   const username = formData.get('username');
   const password = formData.get('password');
   console.log(username, password);
-  const response = await fetch(
-    AUTH_URL,
-    {
-      credentials: 'include',
-      headers: new Headers({
-        Authorization: `Basic ${btoa(unescape(encodeURIComponent(`${username}:${password}`)))}`
-      }),
+  submitButton.disabled = true;
+  usernameInput.disabled = true;
+  passwordInput.disabled = true;
+  submitButton.classList.add('loading');
+  try {
+    const response = await fetch(
+      AUTH_URL,
+      {
+        credentials: 'include',
+        headers: new Headers({
+          Authorization: `Basic ${btoa(unescape(encodeURIComponent(`${username}:${password}`)))}`
+        }),
+      }
+    );
+    if (response.status === 200) {
+      console.log('PIA response', response);
+      window.location.href = './serverlist.html';
+    } else {
+      usernameInput.setCustomValidity('Wrong password/username');
+      passwordInput.setCustomValidity('Wrong password/username');
     }
-  );
-  console.log('PIA response', response);
+  } catch (e) {
+    // @TODO: Connection error
+  }
   submitButton.disabled = false;
+  usernameInput.disabled = false;
+  passwordInput.disabled = false;
   submitButton.classList.remove('loading');
 });
 
@@ -57,8 +78,7 @@ function onError(e) {
 browser.storage.local.get(['password', 'username']).then(updateUI, onError);
 
 // Whenever the contents of the textarea changes, save the new values
-// bypassListTextArea.addEventListener("change", storeSettings);
-usernameInput.addEventListener("change", storeSettings);
-passwordInput.addEventListener("change", storeSettings);
+usernameInput.addEventListener("input", storeSettings);
+passwordInput.addEventListener("input", storeSettings);
 
 

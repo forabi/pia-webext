@@ -1,22 +1,26 @@
-let config = {
-  bypassList: [],
-  password: '',
-  username: '',
-  proxy: {
-    dns: 'https-us-west.privateinternetaccess.com',
-    port: 443,
-  },
-};
-
 // Tell the background script that we are ready
+
+
+let config;
+
+function setConfig(update) {
+  if (update.isDisabled) {
+    config = undefined;
+  } else {
+    config = {
+      ...config,
+      bypassList: [...update.bypassList],
+      proxy: {
+        ...update.serverList[update.serverKey],
+      },
+    };
+  }
+}
+
 browser.runtime.sendMessage("init");
 
 browser.runtime.onMessage.addListener((message) => {
-  config = {
-    ...config,
-    ...message,
-  };
-
+  setConfig(message);
   return true;
 });
 
@@ -26,6 +30,9 @@ browser.runtime.onMessage.addListener((message) => {
  * @param {string} host Host extracted from `url` for convenience 
  */
 function FindProxyForURL(url, host) {
+  if (config === undefined) {
+    return 'DIRECT';
+  }
   if (config.bypassList.indexOf(host) !== -1) {
     return 'DIRECT';
   }

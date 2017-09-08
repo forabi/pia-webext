@@ -6,40 +6,47 @@ const defaultSettings = {
   bypassList: [],
   username: null,
   password: null,
-  proxy: {
-    dns: 'https-us-west.privateinternetaccess.com',
-    port: 443,
+  serverKey: undefined,
+  serverList: {
+
   },
+  isDisabled: true,
 };
 
-// Register the proxy script
-// browser.proxy.register(proxyScriptURL);
+let config = {
+  ...defaultSettings,
+};
 
 // Log any errors from the proxy script
+browser.proxy.register(proxyScriptURL);
+
 browser.proxy.onProxyError.addListener(error => {
   console.error(`Proxy error: ${error.message}`);
 });
 
+browser.storage.onChanged.addListener(async (newConfig) => {
+  console.log('Configuration changed', newConfig);
+  let dirty = false;
+  for (const key of Object.keys(newConfig)) {
+    console.log(key, newConfig[key]);
+    if (newConfig[key].newValue !== newConfig[key].oldValue) {
+      dirty = true;
+      config[key] = newConfig[key].newValue;
+    }
+  }
+  if (dirty) {
+    browser.runtime.sendMessage(config, { toProxyScript: true });
+  }
+});
+
 // Initialize the proxy
 async function handleInit() {
-  let config = {
-    ...defaultSettings,
-    ...(await browser.storage.local.get([
-        'username',
-        'password',
-        'bypassList',
-        'proxy',
-      ])),
+  config = {
+    ...config,
+    ...(await browser.storage.local.get()),
   };
 
-  await browser.storage.local.set(config);
-
-  browser.storage.onChanged.addListener((newSettings) => {
-    config.username = newSettings.username.newValue;
-    config.password = newSettings.password.newValue;
-    config.bypassList = newSettings.bypassList.newValue;
-    browser.runtime.sendMessage(config, { toProxyScript: true });
-  });
+  console.log('Loaded config', config);
 
   try {
     browser.webRequest.onAuthRequired.addListener(
@@ -61,6 +68,7 @@ async function handleInit() {
       },
       ['blocking']
     );
+    browser.runtime.sendMessage(config, { toProxyScript: true });
   } catch (e) {
     console.log("Error retrieving stored settings");
   }
@@ -76,7 +84,7 @@ function handleMessage(message, sender) {
     handleInit();
   } else {
     // after the init message the only other messages are status messages
-    console.log(message);
+    console.log('Proxy script sent message', message);
   }
 
   return true;

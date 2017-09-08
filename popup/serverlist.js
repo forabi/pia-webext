@@ -1,4 +1,15 @@
-const container = document.querySelector('.container');
+const chooseServerForm = /** @type {HTMLFormElement} */ (document.querySelector('#form-choose-server'));
+const chooseServerButton = /** @type {HTMLButtonElement} */ (chooseServerForm.querySelector('button[type="submit"]'));
+
+chooseServerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(chooseServerForm);
+  const serverKey = formData.get('server');
+  await browser.storage.local.set({ serverKey, isDisabled: false });
+  // @TODO: store server key
+  window.location.href = './loggedIn.html';
+})
+
 
 const SERVER_LIST_URL = 'https://www.privateinternetaccess.com/api/client/services/https';
 
@@ -9,6 +20,7 @@ async function displayServerList() {
   });
 
   const serverList = await response.json();
+  await browser.storage.local.set({ serverList });
 
   Object.keys(serverList).forEach(key => {
     const server = serverList[key];
@@ -28,7 +40,11 @@ async function displayServerList() {
     const radioButton = document.createElement('input');
     radioButton.type = 'radio';
     radioButton.id = key;
+    radioButton.value = key;
     radioButton.name = 'server';
+    radioButton.addEventListener('change', () => {
+      chooseServerButton.click();
+    });
     
     li.appendChild(flag);
     li.appendChild(label);
@@ -36,7 +52,7 @@ async function displayServerList() {
     fragment.appendChild(li);
   });
 
-  container.appendChild(fragment);
+  chooseServerForm.insertBefore(fragment, chooseServerButton);
 }
 
 displayServerList();
