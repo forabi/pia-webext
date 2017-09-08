@@ -1,3 +1,2 @@
 node_modules
-dist/ui/*.js
-dist/background/*.js
+dist/**/*.js
