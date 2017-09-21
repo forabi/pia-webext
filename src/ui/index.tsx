@@ -1,6 +1,7 @@
 import { getIsLoggedIn, getServerId, initializeStore, initialState, State, store } from './store';
-import { Provider, connect } from 'preact-redux';
-import { Component, h, render } from 'preact';
+import { Provider, connect } from 'react-redux';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
 import { ConnectedLoggedInPage } from './pages/LoggedIn';
 import { ConnectedLoginPage } from './pages/Login';
 import { ConnectedServerSelectionPage } from './pages/ServerSelection';

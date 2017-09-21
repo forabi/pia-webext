@@ -13,10 +13,12 @@ module.exports = {
     filename: '[name]/index.js',
   },
   resolve: {
-    alias: Object.assign({
+    alias: {
       // Replace lodash with lodash-es for better tree shaking
       lodash: 'lodash-es',
-    }),
+      react: 'preact-compat',
+      'react-dom': 'preact-compat',
+    },
     extensions: ['.tsx', '.ts', '.js'],
   },
   module: {

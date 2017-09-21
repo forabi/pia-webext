@@ -1,4 +1,4 @@
-type Server = {
+declare type Server = {
   name: string;
   dns: string;
   iso: string;
@@ -6,7 +6,7 @@ type Server = {
   mace: number;
 };
 
-type State = {
+declare type State = {
   isLoggedIn: boolean;
   isLoggingIn: boolean;
   lastLoginError: string | null;
@@ -20,33 +20,33 @@ type State = {
   };
 };
 
-type ProxyScriptConfig = {
+declare type ProxyScriptConfig = {
   server: Server | null;
   isEnabled: boolean;
   bypassList: string[];
 };
 
-type ProxyScriptPayloadsByMessageType = {
+declare type ProxyScriptPayloadsByMessageType = {
   SET_CONFIG: ProxyScriptConfig;
   PATCH_CONFIG: Partial<ProxyScriptConfig>;
 };
 
-type ProxyScriptMessageType = keyof ProxyScriptPayloadsByMessageType;
+declare type ProxyScriptMessageType = keyof ProxyScriptPayloadsByMessageType;
 
-type ProxyScriptMessage<T extends ProxyScriptMessageType> = {
+declare type ProxyScriptMessage<T extends ProxyScriptMessageType> = {
   type: T;
   payload: ProxyScriptPayloadsByMessageType[T];
 };
 
 
-type ProxyHandlerPayloadsByMessageType = {
+declare type ProxyHandlerPayloadsByMessageType = {
   INIT: void;
   LOG: any[];
 };
 
-type ProxyHandlerMessageType = keyof ProxyHandlerPayloadsByMessageType;
+declare type ProxyHandlerMessageType = keyof ProxyHandlerPayloadsByMessageType;
 
-type ProxyHandlerMessage<T extends ProxyHandlerMessageType> = {
+declare type ProxyHandlerMessage<T extends ProxyHandlerMessageType> = {
   type: T;
   payload: ProxyHandlerPayloadsByMessageType[T];
 };

@@ -1,5 +1,5 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { store, DispatchProps } from '../../store';
 
 type Props = Pick<State, 'serverId' | 'serverList'> & DispatchProps;

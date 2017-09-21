@@ -1,6 +1,6 @@
-import { h, Component } from 'preact'
+import React, { Component } from 'react';
 import { store, getSelectedServer, DispatchProps } from '../../store';
-import { connect } from 'preact-redux';
+import { connect } from 'react-redux';
 import linkState from 'linkstate';
 
 type Props = Pick<State, 'isEnabled'> & {

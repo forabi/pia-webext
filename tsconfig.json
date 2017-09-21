@@ -13,13 +13,12 @@
       "scripthost",
       "dom"
     ],
-    "jsxFactory": "h",
     "jsx": "react",
     "allowJs": true,
     "checkJs": true,
     "typeRoots": [
       "@types",
-      "typings"
+      "src/typings"
     ]
   },
   "files": [

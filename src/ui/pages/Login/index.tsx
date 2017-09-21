@@ -1,7 +1,9 @@
-import { h, Component } from 'preact';
-import { connect } from 'preact-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { store, DispatchProps } from '../../store';
 import linkState from 'linkstate';
+import Button from 'material-ui/Button';
+import Input from 'material-ui/Input';
 
 type Props = Pick<State, 'username' | 'password' | 'isLoggingIn'> & DispatchProps;
 
@@ -28,29 +30,29 @@ class LoginPage extends Component<Props, void> {
       <form onSubmit={this.handleSubmit}>
         <label>
           <span>Username:</span>
-          <input
+          <Input
             type="text"
             name="username"
             placeholder="Username (p1234567)"
             disabled={isLoggingIn}
             value={username || ''}
             onInput={this.setValue('username')}
-            required
           />
         </label>
         <label>
           <span>Password:</span>
-          <input
+          <Input
             type="password"
             name="password"
             placeholder="Password"
             disabled={isLoggingIn}
             value={password || ''}
             onInput={this.setValue('password')}
-            required
           />
         </label>
-        <button type="submit" disabled={isLoggingIn}>Login</button>
+        <Button type="submit" disabled={isLoggingIn} raised>
+          Login
+        </Button>
       </form>
     );
   }
