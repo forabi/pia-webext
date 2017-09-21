@@ -8,6 +8,10 @@
     "watch": true,
     "allowSyntheticDefaultImports": true,
     "outDir": "dist",
+    "typeRoots": [
+      "@types",
+      "src/typings"
+    ],
     "lib": [
       "es2015",
       "scripthost",
@@ -15,11 +19,7 @@
     ],
     "jsx": "react",
     "allowJs": true,
-    "checkJs": true,
-    "typeRoots": [
-      "@types",
-      "src/typings"
-    ]
+    "checkJs": true
   },
   "files": [
     "src/proxy-handler/index.ts",
@@ -27,7 +27,7 @@
     "src/icon-handler/index.ts"
   ],
   "include": [
-    "typings"
+    "src/typings"
   ],
   "exclude": [
     "src/ui",

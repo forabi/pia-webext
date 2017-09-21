@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { store, getSelectedServer, DispatchProps } from '../../store';
 import { connect } from 'react-redux';
 import linkState from 'linkstate';
@@ -7,7 +7,7 @@ type Props = Pick<State, 'isEnabled'> & {
   server: Server | null,
 } & DispatchProps;
 
-class LoginPage extends Component<Props, void> {
+class LoginPage extends React.Component<Props, void> {
   toggleEnabled = () => {
     this.props.dispatch({
       type: 'PATCH_STATE',
@@ -17,7 +17,8 @@ class LoginPage extends Component<Props, void> {
     });
   }
 
-  render({ isEnabled, server }: Props) {
+  render() {
+    const { isEnabled, server } = this.props;
     if (server === null) {
       return <div>Unexpected Error</div>;
     }

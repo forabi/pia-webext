@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { store, DispatchProps } from '../../store';
 
 type Props = Pick<State, 'serverId' | 'serverList'> & DispatchProps;
 
-class ServerSelectionPage extends Component<Props, void> {
+class ServerSelectionPage extends React.Component<Props, void> {
   setServer = (key: string) => () => {
     this.props.dispatch({
       type: 'PATCH_STATE',
@@ -15,8 +15,8 @@ class ServerSelectionPage extends Component<Props, void> {
     })
   }
 
-  render({ serverId, serverList }: Props) {
-    console.log('props', this.props);
+  render() {
+    const { serverId, serverList } = this.props;
     return (
       <ul>
         {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import { store, DispatchProps } from '../../store';
 import linkState from 'linkstate';
@@ -7,7 +7,7 @@ import Input from 'material-ui/Input';
 
 type Props = Pick<State, 'username' | 'password' | 'isLoggingIn'> & DispatchProps;
 
-class LoginPage extends Component<Props, void> {
+class LoginPage extends React.Component<Props, void> {
   setValue = (key: keyof State) => (ev: any) => {
     this.props.dispatch({
       type: 'PATCH_STATE',
@@ -25,7 +25,8 @@ class LoginPage extends Component<Props, void> {
     });
   }
 
-  render({ username, password, isLoggingIn }: Props) {
+  render() {
+    const { username, password, isLoggingIn } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
