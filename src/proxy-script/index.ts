@@ -8,10 +8,7 @@ function handleRequest(url: string, host: string) {
   if (config === undefined) {
     return 'HTTP localhost';
   }
-  if (
-    config.isEnabled === false ||
-    config.bypassList.indexOf(host) !== -1
-  ) {
+  if (config.isEnabled === false || config.bypassList.indexOf(host) !== -1) {
     return 'DIRECT';
   }
   const server = config.server;
@@ -36,7 +33,9 @@ function isProxyScriptMessageOfType<T extends ProxyScriptMessageType>(
   return message.type === type;
 }
 
-async function messageHandler(message: ProxyScriptMessage<ProxyScriptMessageType>) {
+async function messageHandler(
+  message: ProxyScriptMessage<ProxyScriptMessageType>,
+) {
   if (isProxyScriptMessageOfType(message, 'SET_CONFIG')) {
     config = message.payload;
   } else if (isProxyScriptMessageOfType(message, 'PATCH_CONFIG')) {

@@ -18,6 +18,7 @@ module.exports = {
       lodash: 'lodash-es',
       react: 'preact-compat',
       'react-dom': 'preact-compat',
+      'react-redux': 'preact-redux',
     },
     extensions: ['.tsx', '.ts', '.js'],
   },

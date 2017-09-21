@@ -27,11 +27,7 @@ const ConnectedApp = connect((state: State): Partial<Props> => ({
   serverId: getServerId(state),
 }))(App);
 
-const theme = createMuiTheme({
-  status: {
-    danger: 'orange',
-  },
-});
+const theme = createMuiTheme();
 
 browser.storage.local
   .get(Object.keys(initialState))
@@ -41,7 +37,7 @@ browser.storage.local
       ...savedState,
       isLoggingIn: false,
       isLoggedIn: false,
-      
+
     }));
 
     render(

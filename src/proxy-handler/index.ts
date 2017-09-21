@@ -74,7 +74,10 @@ async function handleMessage(
         browser.runtime.sendMessage(message, { toProxyScript: true });
       });
     } else if (isProxyHandlerMessageOfType(message, 'LOG')) {
-      console.log('[ProxyScript] Message from proxy script:', ...message.payload);
+      console.log(
+        '[ProxyScript] Message from proxy script:',
+        ...message.payload,
+      );
     }
   }
 }

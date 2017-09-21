@@ -9,7 +9,7 @@ function isConnected(state: State) {
 }
 
 async function updateIcon() {
-  const state = await browser.storage.local.get() as State;
+  const state = (await browser.storage.local.get()) as State;
   const { isLoggedIn, isEnabled } = state;
   if (isConnected(state)) {
     const server = getSelectedServer(state)!;
@@ -31,8 +31,7 @@ async function updateIcon() {
       },
     });
   }
-};
-
+}
 
 updateIcon().then(() => {
   browser.storage.onChanged.addListener(updateIcon);

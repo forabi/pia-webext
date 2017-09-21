@@ -1,4 +1,3 @@
-
 declare type ProxyScriptConfig = {
   server: Server | null;
   isEnabled: boolean;
@@ -16,7 +15,6 @@ declare type ProxyScriptMessage<T extends ProxyScriptMessageType> = {
   type: T;
   payload: ProxyScriptPayloadsByMessageType[T];
 };
-
 
 declare type ProxyHandlerPayloadsByMessageType = {
   INIT: void;
