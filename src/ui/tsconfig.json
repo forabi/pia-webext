@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": false,
     "jsx": "react",
+    "jsxFactory": "React.createElement",
     "module": "esnext",
-    "target": "es2017"
+    "target": "es2017",
+    "strict": true
   },
   "include": [
     ".",

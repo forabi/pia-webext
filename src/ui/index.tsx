@@ -9,7 +9,7 @@ import { ConnectedServerSelectionPage } from './pages/ServerSelection';
 
 type Props = Pick<State, 'serverId' | 'isLoggedIn'>;
 
-class App extends React.Component<Props, void> {
+class App extends React.Component<Props, { }> {
   render() {
     const { isLoggedIn, serverId } = this.props;
     if (!isLoggedIn) {
@@ -29,23 +29,28 @@ const ConnectedApp = connect((state: State): Partial<Props> => ({
 
 const theme = createMuiTheme();
 
-browser.storage.local
-  .get(Object.keys(initialState))
-  .then((savedState: State) => {
-    store.dispatch(initializeStore({
-      ...initialState,
-      ...savedState,
-      isLoggingIn: false,
-      isLoggedIn: false,
+const renderApp = (savedState?: Partial<State>) => {
+  store.dispatch(initializeStore({
+    ...initialState,
+    ...savedState,
+    isLoggingIn: false,
+    isLoggedIn: false,
+  }));
 
-    }));
+  render(
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <ConnectedApp />
+      </MuiThemeProvider>
+    </Provider>,
+    document.getElementById('container'),
+  );
+}
 
-    render(
-      <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
-          <ConnectedApp />
-        </MuiThemeProvider>
-      </Provider>,
-      document.getElementById('container') as Element,
-    );
-  });
+if ('browser' in window) {
+  browser.storage.local
+    .get(Object.keys(initialState))
+    .then(renderApp);
+} else {
+  renderApp();
+}

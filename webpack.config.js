@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const manifest = require('./dist/manifest.json');
+const WebpackHTMLPlugin = require('html-webpack-plugin');
 
 const excludedPatterns = [path.resolve(__dirname, '../dist'), /node_modules/];
 
@@ -11,6 +12,12 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name]/index.js',
+  },
+  devServer: {
+    port: 8080,
+    inline: true,
+    hot: true,
+    historyApiFallback: true,
   },
   resolve: {
     alias: {
@@ -46,6 +53,14 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    // HTML index
+    new WebpackHTMLPlugin({
+      filename: 'index.html',
+      template: path.resolve(__dirname, 'src/ui/index.html'),
+      inject: 'body',
+      minify: false,
+    }),
     // new webpack.optimize.UglifyJsPlugin({
     //   minimize: true,
     //   comments: false,

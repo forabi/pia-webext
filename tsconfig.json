@@ -17,7 +17,6 @@
       "scripthost",
       "dom"
     ],
-    "jsx": "react",
     "allowJs": true,
     "checkJs": true
   },

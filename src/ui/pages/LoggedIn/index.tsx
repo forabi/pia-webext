@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { store, getSelectedServer, DispatchProps } from '../../store';
+import { DispatchProp } from 'react-redux';
 import { connect } from 'react-redux';
 import linkState from 'linkstate';
 
 type Props = Pick<State, 'isEnabled'> & {
   server: Server | null,
-} & DispatchProps;
+} & DispatchProps & DispatchProp<State>;
 
-class LoginPage extends React.Component<Props, void> {
+class LoginPage extends React.Component<Props, { }> {
   toggleEnabled = () => {
     this.props.dispatch({
       type: 'PATCH_STATE',

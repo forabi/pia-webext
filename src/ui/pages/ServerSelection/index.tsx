@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { store, DispatchProps } from '../../store';
+import { DispatchProp } from 'react-redux';
 
-type Props = Pick<State, 'serverId' | 'serverList'> & DispatchProps;
+type Props = Pick<State, 'serverId' | 'serverList'> & DispatchProps & DispatchProp<State>;
 
-class ServerSelectionPage extends React.Component<Props, void> {
+class ServerSelectionPage extends React.Component<Props, { }> {
   setServer = (key: string) => () => {
     this.props.dispatch({
       type: 'PATCH_STATE',

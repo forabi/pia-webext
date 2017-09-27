@@ -21,16 +21,16 @@ type PayloadsByActionType = {
 type ActionType = keyof PayloadsByActionType;
 
 type Action<T extends ActionType> = {
-  type: T;
+  type: T | string;
   payload: PayloadsByActionType[T];
 };
 
-type Dispatch = <T extends ActionType>(action: Action<T>) => void;
+type Dispatch<T extends ActionType> = (action: Action<T>) => typeof action;
 
-type Middleware = (store: Store<State>) => (next: Dispatch) => Dispatch;
+type Middleware = (store: Store<State>) => (next: Dispatch<ActionType>) => Dispatch<ActionType>;
 
 export type DispatchProps = {
-  dispatch: Dispatch;
+  dispatch: Dispatch<ActionType>;
 };
 
 function isActionOfType<T extends ActionType>(
@@ -183,9 +183,11 @@ export const isConnected = createSelector(
   },
 );
 
-store.subscribe(function updateStorage() {
-  const state = store.getState();
-  browser.storage.local.set(state);
-});
+if ('browser' in window) {
+  store.subscribe(function updateStorage() {
+    const state = store.getState();
+    browser.storage.local.set(state);
+  });
+}
 
 export { store };
